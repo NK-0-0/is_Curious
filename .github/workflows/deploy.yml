@@ -1,0 +1,31 @@
+name: Build and Deploy
+on:
+  push:
+    branches:
+        - main
+jobs: 
+  build-and-deplopy:
+    runs-on: ubuntu-latest
+    concurrency: ci-${{github.ref}}
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+
+      - name: Configure Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: '22.15.0'
+      
+      - name: install dependancies
+        run: npm install
+        
+      - name: Build Angular App
+        run: 
+          npm run build
+
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: build
+          branch: gh-pages
+       
