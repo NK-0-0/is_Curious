@@ -29,10 +29,10 @@ jobs:
         run: npm ci # ⬅️ Prefer `npm ci` for CI environments (faster, safer)
 
       - name: Build Angular App ⚙️
-        run: npm run build:deploy
+        run: npm run build:ci
 
       - name: Verify build output
-        run: ls -la dist/is-curious
+        run: ls -la dist/is_Curious
 
       - name: List all contents in dist folder
         run: ls -la dist && find dist
@@ -41,7 +41,7 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: github-pages
-          folder: dist/is-curious
+          folder: dist/is_Curious
           token: ${{ secrets.GITHUB_TOKEN }}
 
       # - name: Deploy to GitHub Pages
