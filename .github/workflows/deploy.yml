@@ -1,33 +1,47 @@
+# This sets the token permission for deploying to GitHub Pages
 permissions:
-  contents: write
+  contents: write   # Allows writing to branches like `github-pages`
 name: Build and Deploy
 on:
   push:
     branches:
-      - main
+      - main   # Triggers the workflow on push to `main` branch
+
 jobs: 
   build-and-deploy:
     runs-on: ubuntu-latest
+    # Prevents overlapping runs on the same branch
     concurrency: ci-${{ github.ref }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3 # ⬅️ Update to latest version (v3)
 
       - name: Setup Node.js
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v4 # ⬅️ Update to latest (v4)
+        with: 
+          node-version: '20'  # More stable LTS version
+
+      - name: Cache node modules
+        uses: actions/cache@v3
         with:
-          node-version: '22.15.0'
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci # ⬅️ Prefer `npm ci` for CI environments (faster, safer)
 
       - name: Build Angular App
-        run: npm run build
+        run: npm run build:deploy
 
-      - name: Deploy
+      - name: Verify build output
+        run: ls -la dist/is-curious
+
+      - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
           folder: dist/is-curious
           branch: github-pages
 

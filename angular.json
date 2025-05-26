@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/",
+            "outputPath": "dist/is-curious",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -38,6 +38,7 @@
           },
           "configurations": {
             "production": {
+              "baseHref": "/is-curious/",
               "budgets": [
                 {
                   "type": "initial",
@@ -56,6 +57,13 @@
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true
+            },
+             "deploy": {
+              "baseHref": "/is-curious/",
+              "outputHashing": "all",
+              "optimization": true,
+              "sourceMap": false,
+              "extractLicenses": true
             }
           },
           "defaultConfiguration": "production"
