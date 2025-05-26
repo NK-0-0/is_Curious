@@ -10,7 +10,7 @@
     "build:ci": "ng build --prod --sourceMap=false --base-href /is_Curious/",
     "build:dev": "ng build -c development",
     "test:ci": "ng test --watch=false --code-coverage --source-map true",
-    "build:deploy": "ng build -c production --base-href=/is_Curious/",
+    "build:deploy": "ng build -c production --base-href=/is-curious/",
     "deploy": "ng build --configuration production && npx angular-cli-ghpages --dir=dist/is-curious",
     "deploy:gh": "npx angular-cli-ghpages --dir=dist/is-curious",
     "lint": "ng lint"
