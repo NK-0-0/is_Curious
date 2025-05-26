@@ -38,10 +38,21 @@ jobs:
       - name: Verify build output
         run: ls -la dist/is-curious
 
-      - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4
+      # - name: Deploy to GitHub Pages
+      #   uses: JamesIves/github-pages-deploy-action@v4
+      #   with:
+      #     GITHUB_TOKEN: ${{ secrets.TOKEN }}
+      #     folder: dist/is-curious
+      #     branch: github-pages
+
+      - name: Build and Deploy
+        uses: AhsanAyaz/angular-deploy-gh-pages-actions@v1.4.0
         with:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
-          folder: dist/is-curious
-          branch: github-pages
+         github_access_token: ${{ secrets.GITHUB_TOKEN }} # see the Configuration section for how you can create secrets
+         build_configuration: production # The build environment for the app. please look configurations in your angular.json
+         base_href: /is-curious/   # make sure this corresponds to https://<your_username>.github.io/<base_href>/
+         deploy_branch: github-pages # The branch the action should deploy to.
+         angular_dist_build_folder: dist/is-curious # The folder where your project is supposed to be after running ng build by the action.
+
+
 
