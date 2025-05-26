@@ -1,6 +1,9 @@
 # This sets the token permission for deploying to GitHub Pages
 permissions:
   contents: write   # Allows writing to branches like `github-pages`
+  pages: write
+  id-token: write
+
 name: Build and Deploy
 on:
   push:
@@ -9,30 +12,23 @@ on:
 
 jobs: 
   build-and-deploy:
-    runs-on: ubuntu-latest
+   
     # Prevents overlapping runs on the same branch
     concurrency: ci-${{ github.ref }}
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3 # ⬅️ Update to latest version (v3)
+      - name: Checkout 👀
+        uses: actions/checkout@v4 # ⬅️ Update to latest version (v3)
 
-      - name: Setup Node.js
+      - name: Setup Node.js 😎
         uses: actions/setup-node@v4 # ⬅️ Update to latest (v4)
         with: 
           node-version: '20'  # More stable LTS version
 
-      - name: Cache node modules
-        uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
-      - name: Install dependencies
+      - name: Install Dependencies 🏃‍♂️
         run: npm ci # ⬅️ Prefer `npm ci` for CI environments (faster, safer)
 
-      - name: Build Angular App
+      - name: Build Angular App ⚙️
         run: npm run build:deploy
 
       - name: Verify build output
@@ -41,6 +37,13 @@ jobs:
       - name: List all contents in dist folder
         run: ls -la dist && find dist
 
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: github-pages
+          folder: dist/is-curious
+          token: ${{ secrets.GITHUB_TOKEN }}
+
       # - name: Deploy to GitHub Pages
       #   uses: JamesIves/github-pages-deploy-action@v4
       #   with:
@@ -48,14 +51,4 @@ jobs:
       #     folder: dist/is-curious
       #     branch: github-pages
 
-      - name: Build and Deploy
-        uses: AhsanAyaz/angular-deploy-gh-pages-actions@v1.4.0
-        with:
-         github_access_token: ${{ secrets.GITHUB_TOKEN }} # see the Configuration section for how you can create secrets
-         build_configuration: production # The build environment for the app. please look configurations in your angular.json
-         base_href: /is_Curious/   # make sure this corresponds to https://<your_username>.github.io/<base_href>/
-         deploy_branch: github-pages # The branch the action should deploy to.
-         angular_dist_build_folder: dist/is-curious # The folder where your project is supposed to be after running ng build by the action.
-
-
-
+       
