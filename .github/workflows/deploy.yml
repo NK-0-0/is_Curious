@@ -22,12 +22,15 @@ jobs:
         run: npm install
 
       - name: Build Angular App
-        run: |
-          npm run build -- --base-href=/${{ github.event.repository.name }}/
+        run: npm run build
+
+      - name: Test
+        run: npm run test:ci
 
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4
         with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           folder: dist/is-curious
           branch: github-pages
 
