@@ -32,7 +32,7 @@ jobs:
         run: npm run build:deploy
 
       - name: Verify build output
-        run: ls -la dist/is-curious
+        run: ls -la dist/is_Curiouss
 
       - name: List all contents in dist folder
         run: ls -la dist && find dist
@@ -40,9 +40,10 @@ jobs:
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           branch: github-pages
-          folder: dist/is-curious
-          token: ${{ secrets.GITHUB_TOKEN }}
+          folder: dist/is_Curious
+          
 
       # - name: Deploy to GitHub Pages
       #   uses: JamesIves/github-pages-deploy-action@v4
